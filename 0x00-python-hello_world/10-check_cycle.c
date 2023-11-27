@@ -1,61 +1,26 @@
-#include <stdio.h>
-#include <stdlib.h>
 #include "lists.h"
 
 /**
- * print_listint - Entry point
- * @h: const pointer for listint_t
- * Return: n
+ * check_cycle - checks if a linked list contains a cycle
+ * @list: linked list to check
+ *
+ * Return: 1 if the list has a cycle, 0 if it doesn't
  */
-size_t print_listint(const listint_t *h)
+int check_cycle(listint_t *list)
 {
-	const listint_t *current = h;
-	size_t n = 0;
+	listint_t *slow = list;
+	listint_t *fast = list;
 
-	while (current)
+	if (list == NULL)
+		return (0);
+
+	while (slow && fast && fast->next)
 	{
-		printf("%i\n", current->n);
-		current = current->next;
-		n++;
+		slow = slow->next;
+		fast = fast->next->next;
+		if (slow == fast)
+			return (1);
 	}
 
-	return (n);
-}
-
-/**
- * add_nodeint - Entry point
- * @head: double pointer for listint_t
- * @n: const param for int
- * Return: listint_t
- */
-listint_t *add_nodeint(listint_t **head, const int n)
-{
-	listint_t *new = NULL;
-
-	new = malloc(sizeof(listint_t));
-	if (new == NULL)
-		return (NULL);
-
-	new->n = n;
-	new->next = *head;
-	*head = new;
-
-	return (new);
-}
-
-/**
- * free_listint - Entry point
- * @head: pointer param for listint_t
- * Return: void
- */
-void free_listint(listint_t *head)
-{
-	listint_t *current;
-
-	while (head)
-	{
-		current = head;
-		head = head->next;
-		free(current);
-	}
+	return (0);
 }
